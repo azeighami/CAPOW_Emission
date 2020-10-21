@@ -136,12 +136,14 @@ def setup(year,hist,hist_year):
     dispatchLP_file='../UCED/CA_dispatchLP.py'
     wrapper_file='../UCED/CA_wrapper.py'
     simulation_file='../UCED/CA_simulation.py'
+    emission_gens_file = 'CA_data_file/emission_gens.csv'
 
     copy(dispatch_file,path)
     copy(wrapper_file,path)
     copy(simulation_file,path)
     copy(dispatchLP_file,path)
     copy(generators_file,path)
+    copy(emission_gens_file,path)
 
 
     filename = path + '/data.dat'

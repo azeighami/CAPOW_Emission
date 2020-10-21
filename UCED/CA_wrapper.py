@@ -17,6 +17,10 @@ import numpy as np
 from datetime import datetime
 import pyomo.environ as pyo
 
+#keep this line no matter what scenario we're exploring
+df_G = pd.read_csv('emission_gens.csv',header=0)
+
+
 def sim(days):
 
 
@@ -179,11 +183,11 @@ def sim(days):
  
         for i in range(1,25):
             for j in instance.Coal:
-                coal = coal + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(instance.CO2Tax[j] + instance.NOXTax[j] + instance.SO2Tax[j] + instance.PMTax[j])
+                coal = coal + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
             for j in instance.Gas:
-                gas = gas + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(instance.CO2Tax[j] + instance.NOXTax[j] + instance.SO2Tax[j] + instance.PMTax[j])
+                gas = gas + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
             for j in instance.Oil:
-                oil = oil + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(instance.CO2Tax[j] + instance.NOXTax[j] + instance.SO2Tax[j] + instance.PMTax[j])
+                oil = oil + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
 
         G = oil + coal + gas 
         Damages.append(G)

@@ -46,6 +46,7 @@ def sim(days):
     Generator=[]
     Duals=[]
     System_cost = []
+    Damages = []
     df_generators = pd.read_csv('generators.csv',header=0)
 
     #max here can be (1,365)
@@ -168,6 +169,25 @@ def sim(days):
 
         S = f + oil + coal + slack + psh + st + sdgei + scei + pgei + f_gas1 + f_gas2 + f_gas3 + f_oil + gas11 + gas21 + gas31 + gas12 + gas22 + gas32 + gas13 + gas23 + gas33 + gas14 + gas24 + gas34 
         System_cost.append(S)
+        
+        ########### 
+        # record pollution damages
+        
+        coal = 0
+        gas = 0
+        oil = 0
+ 
+        for i in range(1,25):
+            for j in instance.Coal:
+                coal = coal + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(instance.CO2Tax[j] + instance.NOXTax[j] + instance.SO2Tax[j] + instance.PMTax[j])
+            for j in instance.Gas:
+                gas = gas + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(instance.CO2Tax[j] + instance.NOXTax[j] + instance.SO2Tax[j] + instance.PMTax[j])
+            for j in instance.Oil:
+                oil = oil + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(instance.CO2Tax[j] + instance.NOXTax[j] + instance.SO2Tax[j] + instance.PMTax[j])
+
+        G = oil + coal + gas 
+        Damages.append(G)
+
 
 
         for z in instance2.zones:
@@ -736,6 +756,7 @@ def sim(days):
     flow_pd=pd.DataFrame(flow,columns=('Source','Sink','Time','Value'))
     shadow_price=pd.DataFrame(Duals,columns=('Constraint','Time','Value'))
     objective = pd.DataFrame(System_cost)
+    damages = pd.DataFrame(Damages)
 
 
     flow_pd.to_csv('flow.csv')
@@ -750,5 +771,6 @@ def sim(days):
     wind_pd.to_csv('wind_out.csv')
     shadow_price.to_csv('shadow_price.csv')    
     objective.to_csv('obj_function.csv')
+    damages.to_csv('damages.csv')
 
     return None

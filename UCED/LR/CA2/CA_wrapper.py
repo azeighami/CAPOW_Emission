@@ -18,7 +18,7 @@ from datetime import datetime
 import pyomo.environ as pyo
 
 #keep this line no matter what scenario we're exploring
-df_G = pd.read_csv('generators.csv',header=0)
+df_G = pd.read_csv('emission_gens.csv',header=0)
 
 
 def sim(days):

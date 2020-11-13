@@ -44,17 +44,17 @@ Winter[0:32,:] = A[332:,:]
 Winter[32:,:] = A[0:59,:]
 ss= np.column_stack((Spring,Summer,Fall,Winter))
 
-for s in range (4):
-    plt.figure()        
-    plt.plot(Spring[:,s])
-    plt.plot(Summer[:,s])
-    plt.plot(Fall[:,s])
-    plt.plot(Winter[:,s])
-    plt.legend(seasons,loc=4)
-    plt.title('CO2 Damages ($) '+ scenarios[s])
-    plt.ylabel('Damages ($)')
-    plt.xlabel('Day of the Year')
-    plt.savefig('fig'+str(s+1)+'.png',dpi=500)
+# for s in range (4):
+#     plt.figure()        
+#     plt.plot(Spring[:,s])
+#     plt.plot(Summer[:,s])
+#     plt.plot(Fall[:,s])
+#     plt.plot(Winter[:,s])
+#     plt.legend(seasons,loc=4)
+#     plt.title('CO2 Damages ($) '+ scenarios[s])
+#     plt.ylabel('Damages ($)')
+#     plt.xlabel('Day of the Year')
+#     plt.savefig('fig'+str(s+1)+'.png',dpi=500)
 
     
 plt.figure()      
@@ -62,15 +62,15 @@ plt.boxplot(ss)
 plt.title('CO2 Damages ($) ')
 plt.xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], index , rotation=90)
 plt.ylabel('CO2 Damages ($)')
-plt.savefig('fig5.png',dpi=500)
+plt.savefig('fig5.png', bbox_inches= "tight" , dpi=500)
 
 plt.figure()
 M = np.mean(ss,axis=0)          
 plt.bar([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],M)
 plt.title('CO2 Damages ($)')
-plt.xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], index , rotation=90)
+plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], index , rotation=90)
 plt.ylabel('CO2 Damages ($)')
-plt.savefig('fig6.png',dpi=500)
+plt.savefig('fig6.png',bbox_inches= "tight",dpi=500)
 
 #########################################################################
 
@@ -93,7 +93,7 @@ Summer2 = C[150:241,:]
 Fall2 = C[241:332,:]
 Winter2[0:32,:] = C[332:,:]
 Winter2[32:,:] = C[0:59,:]
-zz = np.column_stack((Spring,Summer,Fall,Winter))        
+zz = np.column_stack((Spring2,Summer2,Fall2,Winter2))        
 
 for s in range (4):
     plt.figure()        
@@ -113,16 +113,16 @@ plt.boxplot(zz)
 plt.title('Local Air Damages ($) ')
 plt.xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], index , rotation=90)
 plt.ylabel('Local Damages ($)')
-plt.savefig('fig12.png',dpi=500)
+plt.savefig('fig11.png',bbox_inches= "tight", dpi=500)
 
 plt.figure()
 M = np.mean(zz,axis=0)          
 plt.bar([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],M)
 plt.title('Local Air Damages ($)')
-plt.xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], index , rotation=90)
+plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], index , rotation=90)
 plt.ylabel('Local Damages ($)')
-plt.savefig('fig13.png',dpi=500)
-##########################################################################
+plt.savefig('fig12.png',bbox_inches= "tight", dpi=500)
+#########################################################################
 
 spr = Spring+Spring2
 summ = Summer + Summer2
@@ -139,7 +139,7 @@ for s in range (4):
     plt.title('Total Air Damages ($) '+ scenarios[s])
     plt.ylabel('Local Damages ($)')
     plt.xlabel('Day of the Year')
-    plt.savefig('fig'+str(s+14)+'.png',dpi=500)
+    plt.savefig('fig'+str(s+13)+'.png',dpi=500)
 
 
 xx=ss+zz
@@ -148,14 +148,14 @@ plt.boxplot(xx)
 plt.title('Total Air Damages ($)')
 plt.xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], index , rotation=90)
 plt.ylabel('Total Damages ($)')
-plt.savefig('fig18.png', dpi=500)
+plt.savefig('fig17.png',bbox_inches= "tight", dpi=500)
 
 plt.figure()
 M = np.mean(xx,axis=0)          
 plt.bar([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],M)
 plt.title('Total Air Damages ($)')
-plt.xticks([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16], index , rotation=90)
+plt.xticks([0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15], index , rotation=90)
 plt.ylabel('Total Damages ($)')
-plt.savefig('fig19.png',dpi=500)
+plt.savefig('fig18.png',bbox_inches= "tight", dpi=500)
    
     

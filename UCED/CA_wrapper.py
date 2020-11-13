@@ -29,7 +29,7 @@ def sim(days):
 
 
     instance2.dual = pyo.Suffix(direction=pyo.Suffix.IMPORT)
-    opt = SolverFactory("cplex")
+    opt = SolverFactory("gurobi")
 
     H = instance.HorizonHours
     D = 2
@@ -50,8 +50,9 @@ def sim(days):
     Generator=[]
     Duals=[]
     System_cost = []
-    Damages = []
-    df_generators = pd.read_csv('generators.csv',header=0)
+    CO2Damages = []
+    SNPDamages = []
+    df_generators = df_G
 
     #max here can be (1,365)
     for day in range(1,days):
@@ -175,7 +176,7 @@ def sim(days):
         System_cost.append(S)
         
         ########### 
-        # record pollution damages
+        # record carbon damages
         
         coal = 0
         gas = 0
@@ -183,14 +184,32 @@ def sim(days):
  
         for i in range(1,25):
             for j in instance.Coal:
-                coal = coal + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
+                coal = coal + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0])
             for j in instance.Gas:
-                gas = gas + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
+                gas = gas + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0])
             for j in instance.Oil:
-                oil = oil + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
+                oil = oil + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'CO2Tax'].values[0])
 
         G = oil + coal + gas 
-        Damages.append(G)
+        CO2Damages.append(G)
+        
+        ########### 
+        # record other SO2, NOx, PM pollution damages
+        
+        coal = 0
+        gas = 0
+        oil = 0
+ 
+        for i in range(1,25):
+            for j in instance.Coal:
+                coal = coal + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
+            for j in instance.Gas:
+                gas = gas + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
+            for j in instance.Oil:
+                oil = oil + (instance.mwh_1[j,i].value + instance.mwh_2[j,i].value + instance.mwh_3[j,i].value)*(df_G.loc[df_G['name'] == j,'NOXTax'].values[0] + df_G.loc[df_G['name'] == j,'SO2Tax'].values[0] + df_G.loc[df_G['name'] == j,'PMTax'].values[0])
+
+        G = oil + coal + gas 
+        SNPDamages.append(G)
 
 
 
@@ -760,7 +779,8 @@ def sim(days):
     flow_pd=pd.DataFrame(flow,columns=('Source','Sink','Time','Value'))
     shadow_price=pd.DataFrame(Duals,columns=('Constraint','Time','Value'))
     objective = pd.DataFrame(System_cost)
-    damages = pd.DataFrame(Damages)
+    co2damages = pd.DataFrame(CO2Damages)
+    snpdamages = pd.DataFrame(SNPDamages)
 
 
     flow_pd.to_csv('flow.csv')
@@ -775,6 +795,7 @@ def sim(days):
     wind_pd.to_csv('wind_out.csv')
     shadow_price.to_csv('shadow_price.csv')    
     objective.to_csv('obj_function.csv')
-    damages.to_csv('damages.csv')
+    co2damages.to_csv('co2_damages.csv')
+    snpdamages.to_csv('snp_damages.csv')
 
     return None

@@ -46,7 +46,7 @@ import numpy as np
 df_sim_weather = pd.read_csv('../Stochastic_engine/Synthetic_weather/synthetic_weather_data.csv',header=0)
 sim_years=int(len(df_sim_weather)/365)-4
 
-for i in range(0,sim_years):
+for i in range(0,1): #sim_years
     year=int(i)
 
     ############################################################################

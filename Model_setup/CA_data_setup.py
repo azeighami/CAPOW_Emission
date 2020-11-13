@@ -9,9 +9,15 @@ import pandas as pd
 import numpy as np
 
 def setup(year,hist,hist_year):
+    
+    #scenario = 'SNP'
+    #scenario = 'no_tax'
+    scenario = 'all_tax'
+    #scenario = 'CO2'
 
     #read generator parameters into DataFrame
-    df_gen = pd.read_csv('CA_data_file/generators.csv',header=0)
+    generators_file='CA_data_file/generators_' + scenario + '.csv'
+    df_gen = pd.read_csv(generators_file,header=0)
 
     #read transmission path parameters into DataFrame
     df_paths = pd.read_csv('CA_data_file/paths.csv',header=0)
@@ -128,10 +134,9 @@ def setup(year,hist,hist_year):
     from shutil import copy
     from pathlib import Path
 
-    path=str(Path.cwd().parent) +str (Path('/UCED/LR/CA' + str(year)))
+    path=str(Path.cwd().parent) +str (Path('/UCED/LR/' + scenario + '/CA' + str(year)))
     os.makedirs(path,exist_ok=True)
 
-    generators_file='CA_data_file/generators.csv'
     dispatch_file='../UCED/CA_dispatch.py'
     dispatchLP_file='../UCED/CA_dispatchLP.py'
     wrapper_file='../UCED/CA_wrapper.py'

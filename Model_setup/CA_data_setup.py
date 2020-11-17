@@ -12,8 +12,8 @@ def setup(year,hist,hist_year):
     
     #scenario = 'SNP'
     #scenario = 'no_tax'
-    scenario = 'all_tax'
-    #scenario = 'CO2'
+    #scenario = 'all_tax'
+    scenario = 'CO2'
 
     #read generator parameters into DataFrame
     generators_file='CA_data_file/generators_' + scenario + '.csv'

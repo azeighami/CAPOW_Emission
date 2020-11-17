@@ -10,10 +10,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-scenarios = ['all_tax','co2_tax','no_tax','snp_tax']
+scenarios = ['all_tax','CO2','no_tax','SNP']
 
 for s in scenarios:
-    filename = s + '/co2_damages.csv'
+    filename = s + '/CA0/co2_damages.csv'
     df_data = pd.read_csv(filename,header=0,index_col=0)
     
     idx = scenarios.index(s)
@@ -49,7 +49,7 @@ plt.savefig('fig3.png',dpi=500)
 
 
 for s in scenarios:
-    filename = s + '/snp_damages.csv'
+    filename = s + '/CA0/snp_damages.csv'
     df_data = pd.read_csv(filename,header=0,index_col=0)
     
     idx = scenarios.index(s)

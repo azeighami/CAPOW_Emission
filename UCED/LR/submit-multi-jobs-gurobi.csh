@@ -90,5 +90,3 @@ while ($folNum < $totalFols)
 end
 
 conda deactivate
-
-	

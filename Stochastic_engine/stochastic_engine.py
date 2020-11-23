@@ -24,7 +24,7 @@ starttime = time.time()
 # dates of the forecast_exp scenario flow files. Start date must be 1/1/1901.
 # End dates must be stoch_years + 3 after start date. 
 
-stoch_years=20
+stoch_years=501
 
 # Generate synthetic weather (wind speed and temperature) records. 
 import synthetic_temp_wind
@@ -41,7 +41,7 @@ print('streamflows')
 # DAILY HYDROPOWER SIMULATION
 
 # Now specify a smaller subset of stochastic data to run (must be < stoch years)
-sim_years = 19
+sim_years = 500
 
 # Run ORCA to get California storage dam releases
 import main

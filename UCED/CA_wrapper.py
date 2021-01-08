@@ -20,6 +20,10 @@ import pyomo.environ as pyo
 #keep this line no matter what scenario we're exploring
 df_G = pd.read_csv('emission_gens.csv',header=0)
 
+Solvername = 'gurobi'
+Timelimit = 1800 # for the simulation of one day in seconds
+# Threadlimit = 8 # maximum number of threads to use
+
 
 def sim(days):
 
@@ -29,7 +33,14 @@ def sim(days):
 
 
     instance2.dual = pyo.Suffix(direction=pyo.Suffix.IMPORT)
-    opt = SolverFactory("gurobi")
+    opt = SolverFactory(Solvername)
+    
+    if Solvername == 'cplex':
+        opt.options['timelimit'] = Timelimit
+    elif Solvername == 'gurobi':           
+        opt.options['TimeLimit'] = Timelimit
+        
+    # opt.options['threads'] = Threadlimit
 
     H = instance.HorizonHours
     D = 2
@@ -92,7 +103,7 @@ def sim(days):
             instance.HorizonPGE_valley_hydro_minflow[i] = instance.SimPGE_valley_hydro_minflow[(day-1)*24+i]
             instance.HorizonSCE_hydro_minflow[i] = instance.SimSCE_hydro_minflow[(day-1)*24+i]
     #
-        CAISO_result = opt.solve(instance,tee=True,symbolic_solver_labels=True)
+        CAISO_result = opt.solve(instance,tee=True,symbolic_solver_labels=True, load_solutions=False)
         instance.solutions.load_from(CAISO_result)
         
         ########### 
@@ -265,7 +276,7 @@ def sim(days):
                     instance2.switch[j,t] = 0
                     instance2.switch[j,t].fixed = True
                     
-        results = opt.solve(instance2,tee=True,symbolic_solver_labels=True)
+        results = opt.solve(instance2,tee=True,symbolic_solver_labels=True, load_solutions=False)
         instance2.solutions.load_from(results)
 
         print ("Duals")

@@ -16,8 +16,15 @@ import seaborn as sns
 
 #####Initializing
 scenarios = ['all_tax' , 'CO2', 'no_tax', 'SNP']
-stochastic_column = ['CA_load', 'PNW_Load','CA_Hydropower','PNW_Hydropower','Path66_flow','CA_Wind_Power','PNW_Wind_Power', 'Solar_Power']
-column_name = ['CO2_damage','SNP_Damage', 'Shadow_Price','CA_load', 'PNW_Load','CA_Hydropower','PNW_Hydropower','Path66_flow','CA_Wind_Power','PNW_Wind_Power', 'Solar_Power']
+scenarios_label = ['All' , 'CO2' , 'No', 'SNP']
+stochastic_column = ['CA Load', 'PNW Load','CA Hydropower','PNW Hydropower','Path66 Flow','CA Wind Power','PNW Wind Power', 'CA Solar Power']
+column_name = ['CO2 Damage','Local Damage', 'Shadow Price','CA Load', 'PNW Load','CA Hydropower','PNW Hydropower','Path66 Flow','CA Wind Power','PNW Wind Power', 'CA Solar Power']
+
+#The color map theme 
+# cmap = 'coolwarm'
+cmap = plt.cm.RdBu_r
+percentiles = [0,1,5,10,25,50,75,90,95,99,100]
+
 
 stochastic_percentile_df = pd.DataFrame([])
 CO2_damage_percentile_df = pd.DataFrame([])
@@ -25,9 +32,6 @@ SNP_damage_percentile_df = pd.DataFrame([])
 Shadow_price_percentile_df = pd.DataFrame([])
 Day = pd.DataFrame([])
 
-
-#The color map theme 
-cmap = 'coolwarm'
 
 #### Reading the "Daily results" of simulation 
 stochastic_df = pd.read_csv('Results/Stochastic_df.csv')
@@ -106,24 +110,24 @@ for k in scenarios:
     plot_df.columns = column_name
     plot_df2.columns = column_name
     
-    plot_df = plot_df.drop(columns = ['PNW_Load','Path66_flow' , 'PNW_Wind_Power'])
-    plot_df2 = plot_df2.drop(columns = ['PNW_Load','Path66_flow' , 'PNW_Wind_Power'])
+    plot_df = plot_df.drop(columns = ['PNW Load','Path66 Flow' , 'PNW Wind Power'])
+    plot_df2 = plot_df2.drop(columns = ['PNW Load','Path66 Flow' , 'PNW Wind Power'])
 
             
-#     ##### Categorize to high and low
+# #     ##### Categorize to high and low
 #     for i in range(len(plot_df)):
-#         if plot_df.loc[i,'SNP_Damage'] <= 10:
+#         if plot_df.loc[i,'Local Damage'] <= 10:
 #             plot_df.loc[i,'Dataset'] = 'Low'
-#         elif plot_df.loc[i,'SNP_Damage'] >= 90:
+#         elif plot_df.loc[i,'Local Damage'] >= 90:
 #             plot_df.loc[i,'Dataset'] = 'High'
 #         else:
 #             plot_df.loc[i,'Dataset'] = 'None'
 # ################################################################
 # ######Finding the highst and lowest             
-#         if plot_df2.loc[i,'SNP_Damage'] == plot_df2['SNP_Damage'].min():
+#         if plot_df2.loc[i,'Local Damage'] == plot_df2['Local Damage'].min():
 #             plot_df2.loc[i,'Dataset'] = 'Lowest'
             
-#         if plot_df2.loc[i,'SNP_Damage'] == plot_df2['SNP_Damage'].max():
+#         if plot_df2.loc[i,'Local Damage'] == plot_df2['Local Damage'].max():
 #             plot_df2.loc[i,'Dataset'] = 'Highest'
            
             
@@ -155,7 +159,7 @@ for k in scenarios:
 #     # plt.annotate('${}'.format(str(np.round(np.min(CO2_SP_df),2))),(-1,-2),annotation_clip=False,fontweight='black')
 #     plt.ylabel('Percentile')
 #     plt.xticks( rotation=90)
-#     plt.title('Damages of {} Tax Scenario Parallel Plot'.format(k))
+#     plt.title('Damages of {} Tax Scenario Parallel Plot'.format(scenarios_label[scenarios.index(k)]))
 #     plt.savefig('Plots/Dameges_{}.png'.format(k), bbox_inches='tight',dpi=250)
 #     plt.clf()
     
@@ -164,50 +168,50 @@ for k in scenarios:
 
 
 ####################################### Color Map 
-    # plot_df = plot_df.drop(columns = ['Dataset'])        
-    # plot_df['Rank'] = plot_df['SNP_Damage']
     
-    # plt.style.use('seaborn-white')
-    # plt.figure()
-    # parallel_coordinates(plot_df.sort_values(by='SNP_Damage'),'Rank',colormap=cmap)
-    # plt.legend('')
-    # # plt.annotate('${}'.format(str(np.round(np.max(ca_price_2020),2))),(-1,98),annotation_clip=False, fontweight='black')
-    # # plt.annotate('${}'.format(str(np.round(np.min(ca_price_2020),2))),(-1,-2),annotation_clip=False,fontweight='black')
-    # plt.ylabel('Percentile')
-    # plt.xticks(rotation=90)
-    # plt.title('Damages of {} Tax Scenario Parallel Plot'.format(k))
-    # plt.savefig('Plots/ColorMap_Dameges_{}.png'.format(k), bbox_inches='tight',dpi=250)
-    # plt.clf()
+    # plot_df = plot_df.drop(columns = ['Dataset'])        
+    plot_df['Rank'] = plot_df['Local Damage']
+    plt.style.use('seaborn-white')
+    plt.figure()
+    parallel_coordinates(plot_df.sort_values(by='Local Damage'),'Rank',colormap=cmap, alpha = 0.8, lw=.5)
+    plt.legend('')
+    # plt.annotate('${}'.format(str(np.round(np.max(ca_price_2020),2))),(-1,98),annotation_clip=False, fontweight='black')
+    # plt.annotate('${}'.format(str(np.round(np.min(ca_price_2020),2))),(-1,-2),annotation_clip=False,fontweight='black')
+    plt.ylabel('Percentile')
+    plt.xticks(rotation=90)
+    plt.title('Damages of {} Tax Scenario Parallel Plot'.format(scenarios_label[scenarios.index(k)]))
+    plt.savefig('Plots/ColorMap_Dameges_{}.png'.format(k), bbox_inches='tight',dpi=250)
+    plt.clf()
     
 
 ####### Histogram 
 
-SNP_diff_all = pd.DataFrame (SNP_damage_df.loc[:,'all_tax'] - SNP_damage_df.loc[:,'SNP'])
-SNP_diff_no = pd.DataFrame ( SNP_damage_df.loc[:,'no_tax'] - SNP_damage_df.loc[:,'SNP'])
+# SNP_diff_all = pd.DataFrame (SNP_damage_df.loc[:,'all_tax'] - SNP_damage_df.loc[:,'SNP'])
+# SNP_diff_no = pd.DataFrame ( SNP_damage_df.loc[:,'no_tax'] - SNP_damage_df.loc[:,'SNP'])
+
+# # sns.distplot(SNP_diff_all,SNP_diff_no, hist = False, kde = True,
+# #                   kde_kws = {'linewidth': 3},
+# #                   label = "All Tax vs. SNP Tax")
+
+# sns.distplot(SNP_diff_no, hist = False, kde = True,
+#                   kde_kws = {'linewidth': 3},
+#                   label = "No Tax vs. SNP Tax")
+    
+# plt.title('Damage Distribution Dencity')
+# plt.xlabel('No Tax vs. SNP Tax Damages')
+# plt.ylabel('Density')
+# plt.savefig('Plots/No Tax vs. SNP Tax Damages.png', bbox_inches='tight',dpi=250)
+# plt.clf()
+
+
+
 
 # sns.distplot(SNP_diff_all,SNP_diff_no, hist = False, kde = True,
 #                   kde_kws = {'linewidth': 3},
 #                   label = "All Tax vs. SNP Tax")
 
-sns.distplot(SNP_diff_no, hist = False, kde = True,
-                  kde_kws = {'linewidth': 3},
-                  label = "No Tax vs. SNP Tax")
-    
-plt.title('Damage Distribution Dencity')
-plt.xlabel('No Tax vs. SNP Tax Damages')
-plt.ylabel('Density')
-plt.savefig('Plots/No Tax vs. SNP Tax Damages.png', bbox_inches='tight',dpi=250)
-plt.clf()
-
-
-
-
-sns.distplot(SNP_diff_all,SNP_diff_no, hist = False, kde = True,
-                  kde_kws = {'linewidth': 3},
-                  label = "All Tax vs. SNP Tax")
-
-plt.title('Damage Distribution Dencity')
-plt.xlabel('All Tax vs. SNP Tax Damages')
-plt.ylabel('Density')
-plt.savefig('Plots/All Tax vs. SNP Tax Damages.png', bbox_inches='tight',dpi=250)
-plt.clf()
+# plt.title('Damage Distribution Dencity')
+# plt.xlabel('All Tax vs. SNP Tax Damages')
+# plt.ylabel('Density')
+# plt.savefig('Plots/All Tax vs. SNP Tax Damages.png', bbox_inches='tight',dpi=250)
+# plt.clf()

@@ -30,6 +30,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import pyomo.environ as pyo
+from pyomo.environ import value
 
 def sim(days):
     
@@ -143,6 +144,25 @@ def sim(days):
 
         S = gas + oil + coal + slack + psh + nuclear + st + f_gas + f_oil + f_coal 
         System_cost.append(S)
+        
+        
+        for j in instance.Generators:
+            for t in K:
+                if value(instance.on[j,t]) == 1:
+                    instance2.on[j,t] = 1
+                    instance2.on[j,t].fixed = True
+                else:
+                    instance.on[j,t] = 0
+                    instance2.on[j,t] = 0
+                    instance2.on[j,t].fixed = True
+
+                if value(instance.switch[j,t]) == 1:
+                    instance2.switch[j,t] = 1
+                    instance2.switch[j,t].fixed = True
+                else:
+                    instance2.switch[j,t] = 0
+                    instance2.switch[j,t] = 0
+                    instance2.switch[j,t].fixed = True
 
         
         for z in instance2.zones:
@@ -374,7 +394,7 @@ def sim(days):
                 wind.append((index[0],index[1]+((day-1)*24),varobject[index].value))  
                    
             for j in instance.Generators:
-                if instance.on[j,H] == 1:
+                if value(instance.on[j,H]) == 1:
                     instance.on[j,0] = 1
                 else: 
                     instance.on[j,0] = 0
@@ -402,7 +422,7 @@ def sim(days):
                 instance.mwh_2[j,0].fixed = True
                 instance.mwh_3[j,0] = newval2
                 instance.mwh_3[j,0].fixed = True 
-                if instance.switch[j,H] == 1:
+                if value(instance.switch[j,H]) == 1:
                     instance.switch[j,0] = 1
                 else:
                     instance.switch[j,0] = 0

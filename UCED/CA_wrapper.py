@@ -16,6 +16,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 import pyomo.environ as pyo
+from pyomo.environ import value
 
 #keep this line no matter what scenario we're exploring
 df_G = pd.read_csv('emission_gens.csv',header=0)
@@ -260,7 +261,7 @@ def sim(days):
      
         for j in instance.Generators:
             for t in K:
-                if instance.on[j,t] == 1:
+                if value(instance.on[j,t]) == 1:
                     instance2.on[j,t] = 1
                     instance2.on[j,t].fixed = True
                 else:
@@ -268,7 +269,7 @@ def sim(days):
                     instance2.on[j,t] = 0
                     instance2.on[j,t].fixed = True
 
-                if instance.switch[j,t] == 1:
+                if value(instance.switch[j,t]) == 1:
                     instance2.switch[j,t] = 1
                     instance2.switch[j,t].fixed = True
                 else:
@@ -728,7 +729,7 @@ def sim(days):
 
 
             for j in instance.Generators:
-                if instance.on[j,24] == 1:
+                if value(instance.on[j,24]) == 1:
                     instance.on[j,0] = 1
                 else:
                     instance.on[j,0] = 0
@@ -756,7 +757,7 @@ def sim(days):
                 instance.mwh_2[j,0].fixed = True
                 instance.mwh_3[j,0] = newval2
                 instance.mwh_3[j,0].fixed = True
-                if instance.switch[j,24] == 1:
+                if value(instance.switch[j,24]) == 1:
                     instance.switch[j,0] = 1
                 else:
                     instance.switch[j,0] = 0

@@ -17,9 +17,8 @@ generator = pd.read_csv("generator_final_DOE.csv")
 for i in generator.index:
     for j in eGRID.index:
         if generator.loc[i,'DOE'] == eGRID.loc[j,'ORISPL']:
-            generator.loc[i,'FIPSCNTY'] = eGRID.loc[j,'FIPSCNTY']
-            generator.loc[i,'CNTYNAME'] = eGRID.loc[j,'CNTYNAME']
-
+            generator.loc[i,'CapacityFactor'] = eGRID.loc[j,'CAPFAC']
+            
           
             
 generator.to_csv (r'generator_final_DOE.csv', index = False, header=True)

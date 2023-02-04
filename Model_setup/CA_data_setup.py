@@ -12,10 +12,10 @@ def setup(year,hist,hist_year):
     
 
     # The for loop setup the different emission tax scenarios automatically. 
-    scenario = ['SNP','no_tax','all_tax','CO2']
-    for sen in range(4):
+    scenario = ['SNP','no_tax']
+    for sen in scenario:
         #read generator parameters into DataFrame
-        generators_file='CA_data_file/generators_' + scenario[sen] + '.csv'
+        generators_file='CA_data_file/generators_' + sen + '.csv'
         df_gen = pd.read_csv(generators_file,header=0)
     
         #read transmission path parameters into DataFrame
@@ -133,7 +133,7 @@ def setup(year,hist,hist_year):
         from shutil import copy
         from pathlib import Path
     
-        path=str(Path.cwd().parent) +str (Path('/UCED/LR/' + scenario[sen] + '/CA' + str(year)))
+        path=str(Path.cwd().parent) +str (Path('/UCED/LR/' + sen + '/CA' + str(year)))
         os.makedirs(path,exist_ok=True)
     
         dispatch_file='../UCED/CA_dispatch.py'

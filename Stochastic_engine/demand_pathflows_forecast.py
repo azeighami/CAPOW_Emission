@@ -2897,9 +2897,9 @@ plt.savefig('Path66_perfect_foresight.png', dpi=2000)
 #df_C.columns = ['BPA','PNW','SDGE','SCE','PGE_valley','PGE_bay']
 #df_C.to_csv('Synthetic_demand_pathflows/Sim_hourly_load.csv')
 
-#plt.figure()
-#sns.distplot(NWPaths_y[:,0], color="skyblue", label="Hist")
-#sns.distplot(syn_Path8, color="red", label="Sim").set_title("Path8")
+# plt.figure()
+# sns.distplot(NWPaths_y[:,0], color="skyblue", label="Hist")
+# sns.distplot(syn_Path8, color="red", label="Sim").set_title("Path8")
 #
 #plt.figure()
 #sns.distplot(NWPaths_y[:,1], color="skyblue", label="Hist")

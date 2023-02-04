@@ -207,10 +207,10 @@ Sim_HDD_CDD=T_all[:,112:]
 Sim_CDD=Sim_HDD_CDD[:,15:]
 Sim_HDD=Sim_HDD_CDD[:,:15]
 ######################################
-#sns.kdeplot(annual_CDD[:,0],label='His')
-#sns.kdeplot(annual_CDD_sim[:,0],label='Syn')
-#sns.kdeplot(Sim_HDD_CDD[:,15],label='Capula')
-#plt.legend()
+# sns.kdeplot(annual_CDD[:,0],label='His')
+# sns.kdeplot(annual_CDD_sim[:,0],label='Syn')
+# sns.kdeplot(Sim_HDD_CDD[:,15],label='Capula')
+# plt.legend()
 #
 #sns.kdeplot(annual_HDD[:,0],label='His')
 #sns.kdeplot(annual_HDD_sim[:,0],label='Syn')

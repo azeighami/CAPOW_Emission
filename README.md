@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/597542133.svg)](https://zenodo.org/badge/latestdoi/597542133)
+[![DOI](https://zenodo.org/badge/304931077.svg)](https://zenodo.org/badge/latestdoi/304931077)
 
 
 ## Introduction to the CAPOW Model

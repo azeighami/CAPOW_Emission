@@ -1,6 +1,6 @@
 @software{CAPOW_Emission,
   author = {Zeighami, Amir and Kern, Jordan},
-  doi = {10.5281/zenodo.7613637},
+  doi = {10.5281/zenodo.7613641},
   month = {2},
   title = {{CAPOW for air pollution exposure and equity study}},
   url = {https://github.com/azeighami/CAPOW_Emission},

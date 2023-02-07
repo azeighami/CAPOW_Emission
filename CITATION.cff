@@ -1,9 +1,15 @@
-@software{CAPOW_Emission,
-  author = {Zeighami, Amir and Kern, Jordan},
-  doi = {10.5281/zenodo.7613641},
-  month = {2},
-  title = {{CAPOW for air pollution exposure and equity study}},
-  url = {https://github.com/azeighami/CAPOW_Emission},
-  version = {1.0},
-  year = {2023}
-}
+
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Zeighami"
+  given-names: "Amir"
+  orcid: "https://orcid.org/0000-0002-5211-8372"
+- family-names: "Kenr"
+  given-names: "Jordan"
+  orcid: "https://orcid.org/0000-0002-1999-0628"
+title: "CAPOW for air pollution exposure and equity study"
+version: 1.0
+doi: 10.5281/zenodo.7613641
+date-released: 2023-02-06
+url: "https://github.com/azeighami/CAPOW_Emission"
